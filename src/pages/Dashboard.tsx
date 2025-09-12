@@ -2,6 +2,7 @@ import { DollarSign, ShoppingCart, Users, TrendingUp, Package, CreditCard } from
 import { MetricCard } from "@/components/dashboard/MetricCard";
 import { SalesChart } from "@/components/dashboard/SalesChart";
 import { RecentOrders } from "@/components/dashboard/RecentOrders";
+import { ProductInventory } from "@/components/dashboard/ProductInventory";
 
 export default function Dashboard() {
   return (
@@ -70,6 +71,11 @@ export default function Dashboard() {
       {/* Recent Orders */}
       <div className="grid gap-6 md:grid-cols-1">
         <RecentOrders />
+      </div>
+
+      {/* Product Inventory */}
+      <div className="grid gap-6 md:grid-cols-1">
+        <ProductInventory />
       </div>
     </div>
   );
