@@ -131,7 +131,7 @@ Register a new user account.
 | Field | Type | Required | Rules |
 |-------|------|----------|-------|
 | `name` | string | Yes | 2–50 characters |
-| `email` | string | Yes | Valid email format |
+| `email` | string | Yes | Valid email format | 
 | `password` | string | Yes | Min 6 characters |
 
 **Response `201`:**

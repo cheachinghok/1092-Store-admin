@@ -32,6 +32,8 @@ const ProductManagement = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<any>(null);
   const [productForm, setProductForm] = useState({ ...emptyForm });
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>('');
 
   const fetchProducts = async () => {
     try {
@@ -75,6 +77,8 @@ const ProductManagement = () => {
   const openAddModal = () => {
     setEditingProduct(null);
     setProductForm({ ...emptyForm });
+    setImageFile(null);
+    setImagePreview('');
     setIsModalOpen(true);
   };
 
@@ -89,6 +93,8 @@ const ProductManagement = () => {
       stock: String(product.stock || ''),
       image: product.images?.[0] || ''
     });
+    setImageFile(null);
+    setImagePreview(product.images?.[0] || '');
     setIsModalOpen(true);
   };
 
@@ -97,8 +103,33 @@ const ProductManagement = () => {
     setProductForm((prev) => ({ ...prev, [name]: value }));
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onload = () => setImagePreview(reader.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveImage = () => {
+    setImageFile(null);
+    setImagePreview('');
+    setProductForm((prev) => ({ ...prev, image: '' }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let imageUrl = productForm.image;
+    if (imageFile) {
+      imageUrl = await new Promise<string>((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.readAsDataURL(imageFile);
+      });
+    }
+
     const payload = {
       name: productForm.name,
       description: productForm.description,
@@ -106,7 +137,7 @@ const ProductManagement = () => {
       buyingPrice: parseFloat(productForm.buyingPrice),
       sellingPrice: parseFloat(productForm.sellingPrice),
       stock: parseInt(productForm.stock),
-      ...(productForm.image ? { images: [productForm.image] } : {}),
+      ...(imageUrl ? { images: [imageUrl] } : {}),
     };
 
     try {
@@ -487,16 +518,37 @@ const ProductManagement = () => {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Image URL
+                        Product Image
                       </label>
-                      <input
-                        type="url"
-                        name="image"
-                        value={productForm.image}
-                        onChange={handleFormChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="https://example.com/image.jpg"
-                      />
+                      {imagePreview ? (
+                        <div className="relative w-full h-48 rounded-lg overflow-hidden border border-gray-200">
+                          <img
+                            src={imagePreview}
+                            alt="Preview"
+                            className="w-full h-full object-cover"
+                          />
+                          <button
+                            type="button"
+                            onClick={handleRemoveImage}
+                            className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700 transition-colors"
+                            title="Remove image"
+                          >
+                            <TrashIcon className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex flex-col items-center justify-center w-full h-36 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
+                          <PhotoIcon className="h-10 w-10 text-gray-400 mb-2" />
+                          <span className="text-sm text-gray-500">Click to upload image from device</span>
+                          <span className="text-xs text-gray-400 mt-1">PNG, JPG, WEBP up to 5MB</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                          />
+                        </label>
+                      )}
                     </div>
 
                     <div className="flex justify-end space-x-3 pt-4">
