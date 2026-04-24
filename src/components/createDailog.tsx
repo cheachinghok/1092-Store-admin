@@ -103,13 +103,13 @@ export const CreateUserDialog: React.FC<CreateUserDialogProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
-      <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+      <div className="flex items-end sm:items-center justify-center min-h-screen px-0 sm:px-4 pb-0 sm:pb-20">
         <div
           className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
           onClick={handleClose}
         ></div>
 
-        <div className="relative inline-block w-full max-w-lg px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:p-6">
+        <div className="relative w-full sm:max-w-lg bg-white rounded-t-2xl sm:rounded-lg shadow-xl p-5 sm:p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <div>

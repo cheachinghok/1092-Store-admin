@@ -134,16 +134,16 @@ const OrderDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Order Dashboard</h1>
-          <p className="text-gray-600 mt-2">Manage and track your orders</p>
+        <div className="mb-6 md:mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Order Dashboard</h1>
+          <p className="text-gray-600 mt-1">Manage and track your orders</p>
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -204,9 +204,9 @@ const OrderDashboard = () => {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex flex-wrap gap-2">
+        <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-200 mb-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {['today', 'week', 'month', 'year'].map((filter) => (
                 <button
                   key={filter}
@@ -222,7 +222,7 @@ const OrderDashboard = () => {
               ))}
             </div>
 
-            <div className="relative lg:w-64">
+            <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search orders..."
@@ -331,7 +331,7 @@ const OrderDashboard = () => {
         </div>
 
         {/* Summary */}
-        <div className="mt-6 bg-white rounded-xl shadow-sm p-6 border border-gray-200">
+        <div className="mt-6 bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-200">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h3 className="text-lg font-semibold text-gray-900">Period Summary</h3>

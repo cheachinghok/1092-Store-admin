@@ -45,7 +45,8 @@ export function ProductInventory() {
           <CardTitle>Product Inventory</CardTitle>
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-0 sm:p-6">
+        <div className="overflow-x-auto">
         <Table>
           <TableHeader>
             <TableRow>
@@ -98,6 +99,7 @@ export function ProductInventory() {
             )}
           </TableBody>
         </Table>
+        </div>
       </CardContent>
     </Card>
   );

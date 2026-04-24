@@ -142,7 +142,7 @@ export const UserDashboard = () => {
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex justify-between items-center min-h-16 py-3 gap-3">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
               <p className="text-gray-600 text-sm">Manage your team members and their accounts</p>
@@ -158,9 +158,9 @@ export const UserDashboard = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -206,10 +206,10 @@ export const UserDashboard = () => {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex flex-col sm:flex-row gap-4 flex-1">
-              <div className="relative flex-1 max-w-md">
+        <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-200 mb-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-3 flex-1">
+              <div className="relative flex-1">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
                 </div>
@@ -394,12 +394,12 @@ export const UserDashboard = () => {
       {/* Edit User Modal */}
       {editingUser && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen px-4">
+          <div className="flex items-end sm:items-center justify-center min-h-screen px-0 sm:px-4 pb-0 sm:pb-20">
             <div
               className="fixed inset-0 bg-gray-500 bg-opacity-75"
               onClick={() => setEditingUser(null)}
             ></div>
-            <div className="relative bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <div className="relative bg-white rounded-t-2xl sm:rounded-lg shadow-xl w-full sm:max-w-md p-5 sm:p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit User</h3>
               <form onSubmit={handleEditSave} className="space-y-4">
                 <div>

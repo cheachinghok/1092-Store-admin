@@ -69,22 +69,22 @@ export function RecentOrders({ orders = [] }: { orders?: Order[] }) {
             return (
               <div
                 key={order._id}
-                className="flex items-center justify-between p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
+                className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 p-4 rounded-lg border bg-card hover:bg-accent/50 transition-colors"
               >
-                <div className="flex items-center space-x-4">
-                  <Avatar className="h-9 w-9">
+                <div className="flex items-center space-x-3">
+                  <Avatar className="h-9 w-9 shrink-0">
                     <AvatarImage src="/placeholder.svg" alt={customerName} />
                     <AvatarFallback className="bg-gradient-primary text-white">
                       {initials}
                     </AvatarFallback>
                   </Avatar>
-                  <div className="min-w-0 flex-1">
+                  <div className="min-w-0">
                     <p className="text-sm font-medium leading-none">{customerName}</p>
-                    <p className="text-sm text-muted-foreground">{email}</p>
+                    <p className="text-sm text-muted-foreground truncate">{email}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-right">
+                <div className="flex items-center justify-between sm:justify-end sm:space-x-4">
+                  <div className="text-left sm:text-right">
                     <p className="text-sm font-medium">{formatCurrency(order.totalAmount || 0)}</p>
                     <p className="text-xs text-muted-foreground">{orderId}</p>
                   </div>

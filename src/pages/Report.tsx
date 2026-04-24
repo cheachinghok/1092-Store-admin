@@ -121,10 +121,10 @@ const ReportDashboard = () => {
   const maxRevenue = Math.max(...chartRevenues, 1);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Reports</h1>
         <p className="text-gray-600 mt-1">Track business performance and user orders</p>
       </div>
 
@@ -165,7 +165,7 @@ const ReportDashboard = () => {
           ) : (
             <>
               {/* Summary cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6">
                 <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
                   <p className="text-sm font-medium text-gray-500 uppercase tracking-wide">Total Users</p>
                   <p className="text-2xl font-bold text-gray-900 mt-1">{userOrdersData.length}</p>
@@ -328,19 +328,19 @@ const ReportDashboard = () => {
       {activeTab === 'financial' && (
       <div>
       {/* Header controls */}
-      <div className="mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
+      <div className="mb-6 md:mb-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h2 className="text-xl font-semibold text-gray-900">Financial Report</h2>
             <p className="text-gray-600 mt-1">Track your business performance</p>
           </div>
 
-          <div className="mt-4 lg:mt-0 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="bg-white rounded-lg p-1 shadow-sm border">
+          <div className="flex items-center">
+            <div className="bg-white rounded-lg p-1 shadow-sm border flex overflow-x-auto">
               {['day', 'week', 'month', 'year'].map((filter) => (
                 <button
                   key={filter}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all whitespace-nowrap ${
                     timeFilter === filter
                       ? 'bg-blue-500 text-white shadow'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
@@ -356,7 +356,7 @@ const ReportDashboard = () => {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
         <MetricCard
           title="Total Revenue"
           value={revenue}
@@ -388,7 +388,7 @@ const ReportDashboard = () => {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         {/* Revenue Trend Chart */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
@@ -422,7 +422,7 @@ const ReportDashboard = () => {
       </div>
 
       {/* Additional Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
         <StatCard
           title="Profit Margin"
           value={profitMargin.toFixed(1)}

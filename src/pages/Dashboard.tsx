@@ -43,7 +43,7 @@ export default function Dashboard() {
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <MetricCard
           title="Today's Revenue"
           value={dashData ? formatCurrency(today.revenue) : '—'}
@@ -75,7 +75,7 @@ export default function Dashboard() {
       </div>
 
       {/* Charts and Tables Grid */}
-      <div className="grid gap-6 md:grid-cols-4">
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-4">
         <SalesChart />
         <div className="space-y-6">
           <MetricCard

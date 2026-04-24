@@ -56,11 +56,11 @@ export function DashboardHeader() {
       <div className="flex items-center justify-between h-full px-6">
         <div className="flex items-center gap-4">
           <SidebarTrigger className="-ml-1" />
-          <div className="relative">
+          <div className="relative hidden md:block">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
             <Input
               placeholder="Search orders, products, customers..."
-              className="w-80 pl-10"
+              className="w-64 lg:w-80 pl-10"
             />
           </div>
         </div>

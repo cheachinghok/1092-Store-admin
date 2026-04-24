@@ -119,10 +119,10 @@ const CategoryManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-6 md:mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
             <p className="text-gray-600 mt-1">Manage product categories</p>
@@ -137,7 +137,7 @@ const CategoryManagement = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 flex items-center gap-4">
             <div className="p-3 bg-blue-100 rounded-lg">
               <TagIcon className="h-6 w-6 text-blue-600" />
@@ -167,6 +167,7 @@ const CategoryManagement = () => {
           </div>
 
           {categories.length === 0 ? (
+
             <div className="text-center py-16">
               <TagIcon className="mx-auto h-12 w-12 text-gray-300" />
               <h3 className="mt-3 text-sm font-medium text-gray-900">No categories yet</h3>
@@ -180,8 +181,8 @@ const CategoryManagement = () => {
               </button>
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="overflow-x-auto -mx-0">
+              <table className="w-full text-sm min-w-[640px]">
                 <thead className="bg-gray-50">
                   <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -265,12 +266,12 @@ const CategoryManagement = () => {
       {/* Create / Edit Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen px-4">
+          <div className="flex items-end sm:items-center justify-center min-h-screen px-0 sm:px-4 pb-0 sm:pb-20">
             <div
               className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
               onClick={closeModal}
             />
-            <div className="relative bg-white rounded-xl shadow-xl w-full max-w-md p-6">
+            <div className="relative bg-white rounded-t-2xl sm:rounded-xl shadow-xl w-full sm:max-w-md p-5 sm:p-6">
               {/* Modal Header */}
               <div className="flex items-center justify-between mb-5">
                 <h3 className="text-lg font-semibold text-gray-900">

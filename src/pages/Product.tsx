@@ -200,10 +200,10 @@ const ProductManagement = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 p-4 md:p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6 md:mb-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
@@ -220,7 +220,7 @@ const ProductManagement = () => {
         </div>
 
         {/* Statistics Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
           <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
             <div className="flex items-center justify-between">
               <div>
@@ -273,9 +273,9 @@ const ProductManagement = () => {
         </div>
 
         {/* Filters and Search */}
-        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mb-6">
-          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-            <div className="flex flex-wrap gap-2">
+        <div className="bg-white rounded-xl shadow-sm p-4 md:p-6 border border-gray-200 mb-6">
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide">
               <button
                 onClick={() => setSelectedCategory('All')}
                 className={`px-4 py-2 rounded-lg font-medium transition-colors ${
@@ -301,7 +301,7 @@ const ProductManagement = () => {
               ))}
             </div>
 
-            <div className="relative lg:w-80">
+            <div className="relative w-full">
               <input
                 type="text"
                 placeholder="Search products..."
@@ -317,7 +317,7 @@ const ProductManagement = () => {
         </div>
 
         {/* Products Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {filteredProducts.map((product) => {
             const stockStatus = getStockStatus(product.stock);
             const profitMargin = getProfitMargin(product.buyingPrice, product.sellingPrice);
@@ -422,13 +422,13 @@ const ProductManagement = () => {
         {/* Add / Edit Product Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 z-50 overflow-y-auto">
-            <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+            <div className="flex items-end sm:items-center justify-center min-h-screen px-0 sm:px-4 pb-0 sm:pb-20">
               <div
                 className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75"
                 onClick={() => setIsModalOpen(false)}
               ></div>
 
-              <div className="relative inline-block w-full max-w-2xl px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:my-8 sm:align-middle sm:p-6">
+              <div className="relative w-full sm:max-w-2xl bg-white rounded-t-2xl sm:rounded-lg shadow-xl p-5 sm:p-6">
                 <div className="w-full">
                   <h3 className="text-lg font-semibold leading-6 text-gray-900 mb-4">
                     {editingProduct ? 'Edit Product' : 'Add New Product'}
