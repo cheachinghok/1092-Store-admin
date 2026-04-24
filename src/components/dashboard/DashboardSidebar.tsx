@@ -1,10 +1,11 @@
 import { NavLink, useLocation } from "react-router-dom";
-import { 
-  LayoutDashboard, 
-  ShoppingCart, 
-  Package, 
-  Users, 
-  BarChart3, 
+import {
+  LayoutDashboard,
+  ShoppingCart,
+  Package,
+  Tag,
+  Users,
+  BarChart3,
   Settings,
   TrendingUp,
   CreditCard
@@ -36,6 +37,11 @@ const menuItems = [
     title: "Products",
     url: "/products",
     icon: Package,
+  },
+  {
+    title: "Categories",
+    url: "/categories",
+    icon: Tag,
   },
   {
     title: "Customers",

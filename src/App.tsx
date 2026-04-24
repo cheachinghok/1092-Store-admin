@@ -10,6 +10,7 @@ import Product from "./pages/Product";
 import Report from "./pages/Report";
 import Order from "./pages/Order";
 import Customer from "./pages/Customer";
+import Category from "./pages/Category";
 import Login from "./pages/login";
 import ProtectedRoute from "./middleware/protect";
 const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ const App = () => (
             <Route index element={<Dashboard />} />
             <Route path="orders" element={<Order />} />
             <Route path="products" element={<Product />} />
+            <Route path="categories" element={<Category />} />
             <Route path="customers" element={<Customer />} />
             <Route path="analytics" element={<div className="p-6">Analytics page coming soon...</div>} />
             <Route path="payments" element={<div className="p-6">Payments page coming soon...</div>} />

@@ -8,16 +8,13 @@ import {
   TrashIcon,
   PencilIcon,
 } from '@heroicons/react/24/outline';
-import { get, post, put, del } from '../lib/apiClient';
+import { get, post, put, del, upload } from '../lib/apiClient';
 import { toast } from 'sonner';
-
-const API_CATEGORIES = ['Electronics', 'Clothing', 'Books', 'Home', 'Sports', 'Other'];
-const ALL_CATEGORIES = ['All', ...API_CATEGORIES];
 
 const emptyForm = {
   name: '',
   description: '',
-  category: 'Electronics',
+  category: '',
   buyingPrice: '',
   sellingPrice: '',
   stock: '',
@@ -26,6 +23,7 @@ const emptyForm = {
 
 const ProductManagement = () => {
   const [products, setProducts] = useState<any[]>([]);
+  const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
@@ -47,15 +45,25 @@ const ProductManagement = () => {
     }
   };
 
+  const fetchCategories = async () => {
+    try {
+      const data = await get('/api/categories');
+      setCategories(data.data || []);
+    } catch {
+      // silent — categories just won't populate
+    }
+  };
+
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
 
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
+      const catId = product.category?._id || product.category;
       const matchesCategory =
-        selectedCategory === 'All' ||
-        product.category?.toLowerCase() === selectedCategory.toLowerCase();
+        selectedCategory === 'All' || catId === selectedCategory;
       const matchesSearch =
         product.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -70,7 +78,7 @@ const ProductManagement = () => {
       (sum, p) => sum + (p.stock || 0) * (p.buyingPrice || 0),
       0
     );
-    const categoriesCount = new Set(products.map((p) => p.category)).size;
+    const categoriesCount = new Set(products.map((p) => p.category?._id || p.category)).size;
     return { totalProducts, totalStock, totalValue, categoriesCount };
   }, [products]);
 
@@ -87,7 +95,7 @@ const ProductManagement = () => {
     setProductForm({
       name: product.name || '',
       description: product.description || '',
-      category: product.category || 'Electronics',
+      category: product.category?._id || product.category || '',
       buyingPrice: String(product.buyingPrice || ''),
       sellingPrice: String(product.sellingPrice || ''),
       stock: String(product.stock || ''),
@@ -123,11 +131,13 @@ const ProductManagement = () => {
 
     let imageUrl = productForm.image;
     if (imageFile) {
-      imageUrl = await new Promise<string>((resolve) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result as string);
-        reader.readAsDataURL(imageFile);
-      });
+      try {
+        const res = await upload('/api/upload', imageFile);
+        imageUrl = res.url;
+      } catch {
+        toast.error('Image upload failed');
+        return;
+      }
     }
 
     const payload = {
@@ -266,17 +276,27 @@ const ProductManagement = () => {
         <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200 mb-6">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex flex-wrap gap-2">
-              {ALL_CATEGORIES.map((category) => (
+              <button
+                onClick={() => setSelectedCategory('All')}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedCategory === 'All'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                All
+              </button>
+              {categories.map((cat) => (
                 <button
-                  key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  key={cat._id}
+                  onClick={() => setSelectedCategory(cat._id)}
                   className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                    selectedCategory === category
+                    selectedCategory === cat._id
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {category}
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -327,7 +347,7 @@ const ProductManagement = () => {
                   </div>
                   <div className="absolute top-3 right-3">
                     <span className="bg-black bg-opacity-75 text-white px-2 py-1 text-xs font-semibold rounded">
-                      {product.category}
+                      {product.category?.name || product.category}
                     </span>
                   </div>
                 </div>
@@ -442,8 +462,9 @@ const ProductManagement = () => {
                           required
                           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         >
-                          {API_CATEGORIES.map((cat) => (
-                            <option key={cat} value={cat}>{cat}</option>
+                          <option value="">Select a category</option>
+                          {categories.map((cat) => (
+                            <option key={cat._id} value={cat._id}>{cat.name}</option>
                           ))}
                         </select>
                       </div>

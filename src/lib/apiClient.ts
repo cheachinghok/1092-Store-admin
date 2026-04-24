@@ -54,3 +54,16 @@ export async function del(path: string) {
   });
   return handleResponse(response);
 }
+
+export async function upload(path: string, file: File) {
+  const token = localStorage.getItem('token');
+  const formData = new FormData();
+  formData.append('image', file);
+  const headers: HeadersInit = token ? { Authorization: `Bearer ${token}` } : {};
+  const response = await fetch(BASE_URL + path, {
+    method: 'POST',
+    headers,
+    body: formData,
+  });
+  return handleResponse(response);
+}
