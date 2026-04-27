@@ -1,10 +1,9 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import {
   CalendarIcon,
   CurrencyDollarIcon,
   ShoppingBagIcon,
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
 } from '@heroicons/react/24/outline';
 import { get, put } from '../lib/apiClient';
 import { toast } from 'sonner';
@@ -110,7 +109,7 @@ const OrderDashboard = () => {
     }
   };
 
-  const formatCurrency = (amount) =>
+  const formatCurrency = (amount: number) =>
     new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
 
   const formatDate = (dateStr: string) =>
@@ -211,7 +210,7 @@ const OrderDashboard = () => {
                 <button
                   key={filter}
                   onClick={() => setTimeFilter(filter)}
-                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  className={`px-4 py-3 min-h-[44px] rounded-lg font-medium transition-colors whitespace-nowrap ${
                     timeFilter === filter
                       ? 'bg-blue-600 text-white'
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -228,7 +227,7 @@ const OrderDashboard = () => {
                 placeholder="Search orders..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 min-h-[44px] text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -299,7 +298,7 @@ const OrderDashboard = () => {
                       <select
                         value={order.orderStatus}
                         onChange={(e) => handleStatusChange(order._id, e.target.value)}
-                        className={`text-xs font-semibold rounded-full px-2 py-1 border-0 cursor-pointer ${getStatusColor(order.orderStatus)}`}
+                        className={`text-xs font-semibold rounded-full px-2 py-2 min-h-[36px] border-0 cursor-pointer ${getStatusColor(order.orderStatus)}`}
                       >
                         {ORDER_STATUSES.map((s) => (
                           <option key={s} value={s}>

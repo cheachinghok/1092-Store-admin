@@ -189,12 +189,12 @@ const ReportDashboard = () => {
                   placeholder="Search by name or email..."
                   value={userSearch}
                   onChange={(e) => setUserSearch(e.target.value)}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-3 py-3 min-h-[44px] text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="px-3 py-3 min-h-[44px] text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                   <option value="all">All Statuses</option>
                   {['pending', 'processing', 'shipped', 'delivered', 'cancelled'].map((s) => (
@@ -340,7 +340,7 @@ const ReportDashboard = () => {
               {['day', 'week', 'month', 'year'].map((filter) => (
                 <button
                   key={filter}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-all whitespace-nowrap ${
+                  className={`px-4 py-3 min-h-[44px] rounded-md text-sm font-medium transition-all whitespace-nowrap ${
                     timeFilter === filter
                       ? 'bg-blue-500 text-white shadow'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'

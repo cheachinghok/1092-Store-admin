@@ -169,7 +169,7 @@ const AuthForm = () => {
                       name="username"
                       value={formData.username}
                       onChange={handleInputChange}
-                      className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                      className={`block w-full pl-10 pr-3 py-3 min-h-[48px] text-base border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
                         errors.username ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Enter your full name"
@@ -220,7 +220,7 @@ const AuthForm = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className={`block w-full pl-10 pr-10 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                    className={`block w-full pl-10 pr-10 py-3 min-h-[48px] text-base border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
                       errors.password ? 'border-red-300' : 'border-gray-300'
                     }`}
                     placeholder="Enter your password"
@@ -257,7 +257,7 @@ const AuthForm = () => {
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleInputChange}
-                      className={`block w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
+                      className={`block w-full pl-10 pr-3 py-3 min-h-[48px] text-base border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
                         errors.confirmPassword ? 'border-red-300' : 'border-gray-300'
                       }`}
                       placeholder="Confirm your password"

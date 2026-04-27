@@ -298,7 +298,7 @@ const CategoryManagement = () => {
                     required
                     maxLength={50}
                     placeholder="e.g. Electronics"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-3 min-h-[44px] text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                   <p className="mt-1 text-xs text-gray-400">{form.name.length}/50 characters</p>
                 </div>
@@ -314,7 +314,7 @@ const CategoryManagement = () => {
                     maxLength={200}
                     rows={3}
                     placeholder="Optional description..."
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
+                    className="w-full px-3 py-3 text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-none"
                   />
                   <p className="mt-1 text-xs text-gray-400">{form.description.length}/200 characters</p>
                 </div>
@@ -324,14 +324,14 @@ const CategoryManagement = () => {
                     type="button"
                     onClick={closeModal}
                     disabled={submitting}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="px-5 py-3 min-h-[44px] text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="px-5 py-3 min-h-[44px] text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {submitting
                       ? editingCategory
