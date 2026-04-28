@@ -9,6 +9,7 @@ import {
   PencilIcon,
 } from '@heroicons/react/24/outline';
 import { get, post, put, del, upload } from '../lib/apiClient';
+import { formatKHR } from '../lib/utils';
 import { toast } from 'sonner';
 
 const emptyForm = {
@@ -17,6 +18,8 @@ const emptyForm = {
   category: '',
   buyingPrice: '',
   sellingPrice: '',
+  buyingPriceKHR: '',
+  sellingPriceKHR: '',
   stock: '',
   image: ''
 };
@@ -32,6 +35,7 @@ const ProductManagement = () => {
   const [productForm, setProductForm] = useState({ ...emptyForm });
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [priceMode, setPriceMode] = useState<'USD' | 'KHR'>('USD');
 
   const fetchProducts = async () => {
     try {
@@ -78,8 +82,12 @@ const ProductManagement = () => {
       (sum, p) => sum + (p.stock || 0) * (p.buyingPrice || 0),
       0
     );
+    const totalValueKHR = products.reduce(
+      (sum, p) => sum + (p.stock || 0) * (p.buyingPriceKHR || 0),
+      0
+    );
     const categoriesCount = new Set(products.map((p) => p.category?._id || p.category)).size;
-    return { totalProducts, totalStock, totalValue, categoriesCount };
+    return { totalProducts, totalStock, totalValue, totalValueKHR, categoriesCount };
   }, [products]);
 
   const openAddModal = () => {
@@ -87,6 +95,7 @@ const ProductManagement = () => {
     setProductForm({ ...emptyForm });
     setImageFile(null);
     setImagePreview('');
+    setPriceMode('USD');
     setIsModalOpen(true);
   };
 
@@ -98,11 +107,14 @@ const ProductManagement = () => {
       category: product.category?._id || product.category || '',
       buyingPrice: String(product.buyingPrice || ''),
       sellingPrice: String(product.sellingPrice || ''),
+      buyingPriceKHR: String(product.buyingPriceKHR || ''),
+      sellingPriceKHR: String(product.sellingPriceKHR || ''),
       stock: String(product.stock || ''),
       image: product.images?.[0] || ''
     });
     setImageFile(null);
     setImagePreview(product.images?.[0] || '');
+    setPriceMode('USD');
     setIsModalOpen(true);
   };
 
@@ -144,9 +156,16 @@ const ProductManagement = () => {
       name: productForm.name,
       description: productForm.description,
       category: productForm.category,
-      buyingPrice: parseFloat(productForm.buyingPrice),
-      sellingPrice: parseFloat(productForm.sellingPrice),
       stock: parseInt(productForm.stock),
+      ...(priceMode === 'USD'
+        ? {
+            buyingPrice: parseFloat(productForm.buyingPrice),
+            sellingPrice: parseFloat(productForm.sellingPrice),
+          }
+        : {
+            buyingPriceKHR: parseFloat(productForm.buyingPriceKHR),
+            sellingPriceKHR: parseFloat(productForm.sellingPriceKHR),
+          }),
       ...(imageUrl ? { images: [imageUrl] } : {}),
     };
 
@@ -252,6 +271,9 @@ const ProductManagement = () => {
                 <p className="text-2xl font-bold text-gray-900 mt-1">
                   {formatCurrency(stats.totalValue)}
                 </p>
+                {stats.totalValueKHR > 0 && (
+                  <p className="text-sm text-gray-500 mt-0.5">{formatKHR(stats.totalValueKHR)}</p>
+                )}
               </div>
               <div className="p-3 bg-purple-100 rounded-lg">
                 <PhotoIcon className="h-6 w-6 text-purple-600" />
@@ -363,14 +385,20 @@ const ProductManagement = () => {
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-500">Buying Price:</span>
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-medium text-gray-700 text-right">
                         {formatCurrency(product.buyingPrice)}
+                        {product.buyingPriceKHR ? (
+                          <span className="block text-xs text-gray-400">{formatKHR(product.buyingPriceKHR)}</span>
+                        ) : null}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-sm text-gray-500">Selling Price:</span>
-                      <span className="text-sm font-semibold text-green-600">
+                      <span className="text-sm font-semibold text-green-600 text-right">
                         {formatCurrency(product.sellingPrice)}
+                        {product.sellingPriceKHR ? (
+                          <span className="block text-xs text-green-400">{formatKHR(product.sellingPriceKHR)}</span>
+                        ) : null}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
@@ -485,55 +513,123 @@ const ProductManagement = () => {
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Buying Price ($) *
-                        </label>
-                        <input
-                          type="number"
-                          name="buyingPrice"
-                          value={productForm.buyingPrice}
-                          onChange={handleFormChange}
-                          required
-                          min="0"
-                          step="0.01"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="0.00"
-                        />
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-medium text-gray-700">Price Currency:</span>
+                        <div className="flex rounded-lg border border-gray-300 overflow-hidden">
+                          <button
+                            type="button"
+                            onClick={() => setPriceMode('USD')}
+                            className={`px-4 py-1.5 text-sm font-medium transition-colors ${
+                              priceMode === 'USD'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            USD ($)
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => setPriceMode('KHR')}
+                            className={`px-4 py-1.5 text-sm font-medium transition-colors ${
+                              priceMode === 'KHR'
+                                ? 'bg-blue-600 text-white'
+                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                            }`}
+                          >
+                            KHR (៛)
+                          </button>
+                        </div>
                       </div>
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Selling Price ($) *
-                        </label>
-                        <input
-                          type="number"
-                          name="sellingPrice"
-                          value={productForm.sellingPrice}
-                          onChange={handleFormChange}
-                          required
-                          min="0"
-                          step="0.01"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="0.00"
-                        />
-                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {priceMode === 'USD' ? (
+                          <>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Buying Price ($) *
+                              </label>
+                              <input
+                                type="number"
+                                name="buyingPrice"
+                                value={productForm.buyingPrice}
+                                onChange={handleFormChange}
+                                required
+                                min="0"
+                                step="0.01"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="0.00"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Selling Price ($) *
+                              </label>
+                              <input
+                                type="number"
+                                name="sellingPrice"
+                                value={productForm.sellingPrice}
+                                onChange={handleFormChange}
+                                required
+                                min="0"
+                                step="0.01"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="0.00"
+                              />
+                            </div>
+                          </>
+                        ) : (
+                          <>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Buying Price (៛) *
+                              </label>
+                              <input
+                                type="number"
+                                name="buyingPriceKHR"
+                                value={productForm.buyingPriceKHR}
+                                onChange={handleFormChange}
+                                required
+                                min="0"
+                                step="1"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="0"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-sm font-medium text-gray-700 mb-1">
+                                Selling Price (៛) *
+                              </label>
+                              <input
+                                type="number"
+                                name="sellingPriceKHR"
+                                value={productForm.sellingPriceKHR}
+                                onChange={handleFormChange}
+                                required
+                                min="0"
+                                step="1"
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="0"
+                              />
+                            </div>
+                          </>
+                        )}
 
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Stock Quantity *
-                        </label>
-                        <input
-                          type="number"
-                          name="stock"
-                          value={productForm.stock}
-                          onChange={handleFormChange}
-                          required
-                          min="0"
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                          placeholder="0"
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                            Stock Quantity *
+                          </label>
+                          <input
+                            type="number"
+                            name="stock"
+                            value={productForm.stock}
+                            onChange={handleFormChange}
+                            required
+                            min="0"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="0"
+                          />
+                        </div>
                       </div>
                     </div>
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { get } from '../lib/apiClient';
+import { formatKHR } from '../lib/utils';
 import { toast } from 'sonner';
 
 const ReportDashboard = () => {
@@ -179,6 +180,11 @@ const ReportDashboard = () => {
                   <p className="text-2xl font-bold text-gray-900 mt-1">
                     {formatCurrency(allOrders.reduce((s, o) => s + (o.totalAmount || 0), 0))}
                   </p>
+                  {allOrders.some((o) => o.totalAmountKHR) && (
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      {formatKHR(allOrders.reduce((s, o) => s + (o.totalAmountKHR || 0), 0))}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -244,7 +250,14 @@ const ReportDashboard = () => {
                                 <div className="text-xs text-gray-500">{u.email}</div>
                               </td>
                               <td className="px-6 py-4 font-medium text-gray-900">{u.orders.length}</td>
-                              <td className="px-6 py-4 font-semibold text-green-600">{formatCurrency(u.totalSpent)}</td>
+                              <td className="px-6 py-4 font-semibold text-green-600">
+                                {formatCurrency(u.totalSpent)}
+                                {u.orders.some((o) => o.totalAmountKHR) && (
+                                  <div className="text-xs font-normal text-green-400">
+                                    {formatKHR(u.orders.reduce((s, o) => s + (o.totalAmountKHR || 0), 0))}
+                                  </div>
+                                )}
+                              </td>
                               <td className="px-6 py-4 text-gray-700">{formatCurrency(avgOrder)}</td>
                               <td className="px-6 py-4 text-gray-700">
                                 {lastOrder?.createdAt ? formatDate(lastOrder.createdAt) : '—'}
@@ -299,6 +312,9 @@ const ReportDashboard = () => {
                                             </td>
                                             <td className="px-4 py-2 font-semibold text-gray-900">
                                               {formatCurrency(order.totalAmount || 0)}
+                                              {order.totalAmountKHR ? (
+                                                <div className="text-xs font-normal text-gray-400">{formatKHR(order.totalAmountKHR)}</div>
+                                              ) : null}
                                             </td>
                                           </tr>
                                         ))}

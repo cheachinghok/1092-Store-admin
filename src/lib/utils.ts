@@ -6,3 +6,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const API_BASE = import.meta.env.VITE_API_BASE ?? '';
+
+export const formatKHR = (amount: number) =>
+  '៛' + new Intl.NumberFormat('en-US').format(Math.round(amount));

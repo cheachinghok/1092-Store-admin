@@ -12,6 +12,7 @@ import {
 import { Package } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { get } from "@/lib/apiClient";
+import { formatKHR } from "@/lib/utils";
 
 const getStockStatus = (stock: number) => {
   if (stock === 0) {
@@ -77,7 +78,10 @@ export function ProductInventory() {
                   </TableCell>
                   <TableCell>{product.category?.name || product.category}</TableCell>
                   <TableCell className="text-right font-medium">
-                    ${(product.sellingPrice || 0).toFixed(2)}
+                    <div>${(product.sellingPrice || 0).toFixed(2)}</div>
+                    {product.sellingPriceKHR ? (
+                      <div className="text-xs text-muted-foreground">{formatKHR(product.sellingPriceKHR)}</div>
+                    ) : null}
                   </TableCell>
                   <TableCell className="text-right font-medium">
                     {product.stock}

@@ -1,12 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatKHR } from "@/lib/utils";
 
 interface Order {
   _id?: string;
   orderNumber?: string;
   user?: { name?: string; email?: string };
   totalAmount?: number;
+  totalAmountKHR?: number;
   orderStatus?: string;
   createdAt?: string;
 }
@@ -86,6 +88,9 @@ export function RecentOrders({ orders = [] }: { orders?: Order[] }) {
                 <div className="flex items-center justify-between sm:justify-end sm:space-x-4">
                   <div className="text-left sm:text-right">
                     <p className="text-sm font-medium">{formatCurrency(order.totalAmount || 0)}</p>
+                    {order.totalAmountKHR ? (
+                      <p className="text-xs text-muted-foreground">{formatKHR(order.totalAmountKHR)}</p>
+                    ) : null}
                     <p className="text-xs text-muted-foreground">{orderId}</p>
                   </div>
                   <Badge variant={getStatusVariant(order.orderStatus || '')}>

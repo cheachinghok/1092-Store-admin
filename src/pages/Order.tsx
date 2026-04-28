@@ -6,6 +6,7 @@ import {
   ArrowTrendingUpIcon,
 } from '@heroicons/react/24/outline';
 import { get, put } from '../lib/apiClient';
+import { formatKHR } from '../lib/utils';
 import { toast } from 'sonner';
 
 const ORDER_STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
@@ -67,15 +68,19 @@ const OrderDashboard = () => {
 
   const stats = useMemo(() => {
     const totalAmount = filteredOrders.reduce((sum, o) => sum + (o.totalAmount || 0), 0);
+    const totalAmountKHR = filteredOrders.reduce((sum, o) => sum + (o.totalAmountKHR || 0), 0);
     const completedOrders = filteredOrders.filter(
       (o) => o.orderStatus === 'delivered' || o.orderStatus === 'completed'
     ).length;
     const averageOrderValue = filteredOrders.length > 0 ? totalAmount / filteredOrders.length : 0;
+    const averageOrderValueKHR = filteredOrders.length > 0 ? totalAmountKHR / filteredOrders.length : 0;
     return {
       totalAmount,
+      totalAmountKHR,
       totalOrders: filteredOrders.length,
       completedOrders,
       averageOrderValue,
+      averageOrderValueKHR,
     };
   }, [filteredOrders]);
 
@@ -150,6 +155,9 @@ const OrderDashboard = () => {
                 <p className="text-2xl font-bold text-gray-900 mt-1">
                   {formatCurrency(stats.totalAmount)}
                 </p>
+                {stats.totalAmountKHR > 0 && (
+                  <p className="text-sm text-gray-500 mt-0.5">{formatKHR(stats.totalAmountKHR)}</p>
+                )}
               </div>
               <div className="p-3 bg-blue-100 rounded-lg">
                 <CurrencyDollarIcon className="h-6 w-6 text-blue-600" />
@@ -194,6 +202,9 @@ const OrderDashboard = () => {
                 <p className="text-2xl font-bold text-gray-900 mt-1">
                   {formatCurrency(stats.averageOrderValue)}
                 </p>
+                {stats.averageOrderValueKHR > 0 && (
+                  <p className="text-sm text-gray-500 mt-0.5">{formatKHR(stats.averageOrderValueKHR)}</p>
+                )}
               </div>
               <div className="p-3 bg-orange-100 rounded-lg">
                 <ArrowTrendingUpIcon className="h-6 w-6 text-orange-600" />
@@ -311,6 +322,9 @@ const OrderDashboard = () => {
                       <div className="text-sm font-semibold text-gray-900">
                         {formatCurrency(order.totalAmount || 0)}
                       </div>
+                      {order.totalAmountKHR ? (
+                        <div className="text-xs text-gray-400">{formatKHR(order.totalAmountKHR)}</div>
+                      ) : null}
                     </td>
                   </tr>
                 ))}
@@ -342,6 +356,9 @@ const OrderDashboard = () => {
               <div className="text-2xl font-bold text-gray-900">
                 {formatCurrency(stats.totalAmount)}
               </div>
+              {stats.totalAmountKHR > 0 && (
+                <div className="text-sm text-gray-500">{formatKHR(stats.totalAmountKHR)}</div>
+              )}
               <p className="text-sm text-gray-600">Total revenue</p>
             </div>
           </div>

@@ -12,6 +12,7 @@ import Order from "./pages/Order";
 import Customer from "./pages/Customer";
 import Category from "./pages/Category";
 import Login from "./pages/login";
+import Settings from "./pages/Settings";
 import ProtectedRoute from "./middleware/protect";
 const queryClient = new QueryClient();
 
@@ -35,7 +36,7 @@ const App = () => (
             <Route path="analytics" element={<div className="p-6">Analytics page coming soon...</div>} />
             <Route path="payments" element={<div className="p-6">Payments page coming soon...</div>} />
             <Route path="reports" element={<Report />} />
-            <Route path="settings" element={<div className="p-6">Settings page coming soon...</div>} />
+            <Route path="settings" element={<Settings />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="*" element={<NotFound />} />
